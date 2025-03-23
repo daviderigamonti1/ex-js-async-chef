@@ -18,9 +18,8 @@ async function getChefBirthday(id) {
     } catch (err) {
         throw new Error(`Impossibile recuperare ricetta con id ${id}`);
     }
-    if (!ricetta) {
-        console.error(err);
-        throw new Error(`Impossibile trovare ricetta con id ${id}`);
+    if (ricetta.message) {
+        throw new Error(ricetta.message);
     }
 
     const userId = ricetta.userId;
@@ -33,11 +32,11 @@ async function getChefBirthday(id) {
         console.error(err);
         throw new Error(`Impossibile recuperare lo chef con id ${userId}`)
     }
-    if (!chef) {
-        throw new Error(`Impossibile trovare lo chef con id ${userId}`);
+    if (chef.message) {
+        throw new Error(chef.message);
     }
-
-    return chef.birthDate;
+    const dataFormattata = dayjs(chef.birthDate).format("DD-MM-YYYY");
+    return dataFormattata;
 }
 
 
